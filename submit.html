@@ -1,1 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Submit a Level — Course World</title>
+<link rel="stylesheet" href="assets/styles.css" />
+</head>
+<body>
+<header class="site-header">
+<h1>Submit a Level</h1>
+<nav>
+<a href="./" class="btn">← Back to Course World</a>
+</nav>
+</header>
 
+
+<main class="container prose">
+<ol>
+<li>Click the button below to open the **Level Submission** form on GitHub.</li>
+<li>Fill in the **Level Name**, **Description**, and **paste your Level Code** (the exact text your game loads).</li>
+<li>Submit the issue. Once **approved**, it’ll appear on the site within a minute.</li>
+</ol>
+
+
+<p>
+<a class="btn" id="issueBtn" target="_blank">Open Level Submission Form</a>
+</p>
+
+
+<details>
+<summary>Troubleshooting</summary>
+<ul>
+<li>If you don’t have a GitHub account, you’ll be prompted to create one (free).</li>
+<li>Level too long? No problem — the form accepts long code blocks.</li>
+</ul>
+</details>
+</main>
+
+
+<script>
+const user = 'YOUR_USER';
+const repo = 'course-world-site';
+const url = `https://github.com/${user}/${repo}/issues/new?template=submit-level.yml`;
+document.getElementById('issueBtn').href = url;
+</script>
+</body>
+</html>
