@@ -1,1 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Course World</title>
+<link rel="stylesheet" href="assets/styles.css" />
+</head>
+<body>
+<header class="site-header">
+<h1>Course World</h1>
+<nav>
+<a href="submit.html" class="btn">Submit Level</a>
+<a href="https://github.com/YOUR_USER/course-world-site/issues" target="_blank">Issues</a>
+</nav>
+</header>
 
+
+<main class="container">
+<section class="controls">
+<input id="q" type="search" placeholder="Search levels… (name, description, creator)" />
+<select id="sort">
+<option value="new">Newest</option>
+<option value="name">Name A→Z</option>
+<option value="creator">Creator A→Z</option>
+</select>
+</section>
+
+
+<section id="levels" class="grid"></section>
+<button id="loadMore" class="btn ghost">Load more</button>
+</main>
+
+
+<footer class="site-footer">
+<small>Powered by GitHub Pages • <a href="data/levels.json">levels.json</a></small>
+</footer>
+
+
+<script src="assets/app.js"></script>
+</body>
+</html>
