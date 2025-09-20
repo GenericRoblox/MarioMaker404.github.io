@@ -1,1 +1,24 @@
+:root { --bg:#0f0f12; --panel:#17171c; --line:#2a2a33; --text:#e8e8ef; --muted:#a7a7b3; --brand:#5da8ff; }
+* { box-sizing: border-box; }
+body { margin:0; font:16px/1.5 system-ui, -apple-system, Segoe UI, Roboto, sans-serif; color:var(--text); background:radial-gradient(circle at 10% 0%, #121218, #0b0b0e); }
+.container { max-width: 1100px; margin: 0 auto; padding: 24px; }
+.site-header, .site-footer { border-bottom:1px solid var(--line); padding:16px 24px; display:flex; align-items:center; justify-content:space-between; background:rgba(0,0,0,0.2); position:sticky; top:0; backdrop-filter: blur(6px); z-index: 10; }
+.site-footer { border-top:1px solid var(--line); border-bottom:none; position:static; background:transparent; }
+nav a { margin-left:12px; }
 
+
+.controls { display:flex; gap:12px; margin:16px 0 24px; }
+#q { flex:1; padding:12px 14px; border-radius:12px; border:1px solid var(--line); background:var(--panel); color:var(--text); }
+select { padding:12px 14px; border-radius:12px; border:1px solid var(--line); background:var(--panel); color:var(--text); }
+.btn { background:var(--brand); color:#05060a; border:none; border-radius:12px; padding:10px 14px; font-weight:600; text-decoration:none; }
+.btn.ghost { background:transparent; color:var(--text); border:1px solid var(--line); }
+
+
+.grid { display:grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap:16px; }
+.card { background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.2)); border:1px solid var(--line); border-radius:16px; padding:16px; display:flex; flex-direction:column; gap:10px; }
+.card h3 { margin:0; font-size:18px; }
+.card p { margin:0; color:var(--muted); }
+.meta { font-size:12px; color:var(--muted); display:flex; gap:8px; flex-wrap:wrap; }
+.codebox { position:relative; border:1px dashed var(--line); background:rgba(0,0,0,0.25); border-radius:12px; padding:10px; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace; font-size:12px; color:#cde1ff; max-height:120px; overflow:auto; }
+.copy { align-self:flex-start; }
+.prose ol { line-height:1.7; }
