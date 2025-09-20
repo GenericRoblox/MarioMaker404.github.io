@@ -1,37 +1,20 @@
 name: "Submit a Level"
-description: "Share a new level for the Course World."
+description: "Share a new level."
 labels: [level-submission, pending]
-title: "[Level] <Give your level a short name>"
+title: "[Level] <Name>"
 body:
-- type: input
-id: level_name
-attributes:
-label: Level Name
-description: Display name for your level
-placeholder: e.g., Sky Spikes 1-1
-validations:
-required: true
-- type: textarea
-id: description
-attributes:
-label: Level Description
-description: What should players know?
-placeholder: Short description, tips, creator credits
-validations:
-required: true
-- type: textarea
-id: level_code
-attributes:
-label: Level Code (Paste the code used by the game)
-description: Paste the **full level text/code** your game consumes.
-placeholder: Paste your level code here
-render: text
-validations:
-required: true
-- type: input
-id: creator
-attributes:
-label: Creator (optional)
-placeholder: your handle (optional)
-validations:
-required: false
+  - type: input
+    id: level_name
+    attributes: { label: Level Name }
+    validations: { required: true }
+  - type: textarea
+    id: description
+    attributes: { label: Level Description }
+    validations: { required: true }
+  - type: textarea
+    id: level_code
+    attributes: { label: Level Code (paste the full text) }
+    validations: { required: true }
+  - type: input
+    id: creator
+    attributes: { label: Creator (optional) }
