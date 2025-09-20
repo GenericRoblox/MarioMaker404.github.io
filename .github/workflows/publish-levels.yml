@@ -1,1 +1,100 @@
+name: Build Course World Data
+types: [labeled]
 
+
+permissions:
+contents: write
+issues: read
+
+
+jobs:
+publish:
+if: contains(github.event.issue.labels.*.name, 'approved') && contains(github.event.issue.labels.*.name, 'level-submission')
+runs-on: ubuntu-latest
+steps:
+- name: Checkout
+uses: actions/checkout@v4
+
+
+- name: Read issue JSON
+id: payload
+run: |
+echo "ISSUE_JSON<<EOF" >> $GITHUB_OUTPUT
+echo "${{ toJson(github.event.issue) }}" >> $GITHUB_OUTPUT
+echo "EOF" >> $GITHUB_OUTPUT
+
+
+- name: Parse fields → level.json
+id: parse
+run: |
+node <<'NODE'
+const fs = require('fs');
+const issue = JSON.parse(process.env.ISSUE_JSON || '{}');
+const body = issue.body || '';
+// Issue Forms render like:
+// ### Level Name\n<value>\n\n### Level Description\n<value> ... etc.
+function pick(section){
+const r = new RegExp(`### ${section}\\n([\\s\\S]*?)(\\n### |$)`);
+const m = body.match(r);
+return (m && m[1].trim()) || '';
+}
+const name = pick('Level Name');
+const description = pick('Level Description');
+const code = pick('Level Code (Paste the code used by the game)');
+const creator = pick('Creator (optional)') || '';
+if(!name || !code){
+console.error('Missing required fields.');
+process.exit(1);
+}
+const slug = name.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'');
+const id = `${Date.now()}-${issue.number}-${slug}`;
+const record = {
+id,
+name,
+description,
+code,
+creator,
+issue_number: issue.number,
+created_at: new Date().toISOString()
+};
+fs.mkdirSync('data/levels', { recursive: true });
+fs.writeFileSync(`data/levels/${id}.json`, JSON.stringify(record, null, 2));
+console.log('WROTE', `data/levels/${id}.json`);
+NODE
+env:
+ISSUE_JSON: ${{ steps.payload.outputs.ISSUE_JSON }}
+
+
+- name: Rebuild data/levels.json (aggregate)
+run: |
+node <<'NODE'
+const fs = require('fs');
+const dir = 'data/levels';
+const list = fs.readdirSync(dir).filter(f=>f.endsWith('.json'))
+.map(f=>JSON.parse(fs.readFileSync(`${dir}/${f}`,'utf8')))
+.sort((a,b)=>new Date(b.created_at)-new Date(a.created_at));
+fs.writeFileSync('data/levels.json', JSON.stringify(list, null, 2));
+console.log('levels.json contains', list.length, 'levels');
+NODE
+
+
+- name: Commit & push
+uses: EndBug/add-and-commit@v9
+with:
+add: |
+data/levels/*.json
+data/levels.json
+message: "chore(levels): publish new/updated levels"
+
+
+- name: (Optional) Auto-comment on the issue
+uses: actions/github-script@v7
+with:
+script: |
+const levelCount = require('fs').readdirSync('data/levels').length;
+github.rest.issues.createComment({
+owner: context.repo.owner,
+repo: context.repo.repo,
+issue_number: context.payload.issue.number,
+body: `Thanks! Your level is published. Total levels in Course World: **${levelCount}**.`
+});
